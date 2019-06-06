@@ -1,0 +1,17 @@
+{
+  "name": "rootbear",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "tsc -p ./src",
+    "watch": "tsc -w -p ./src",
+    "debug": "nodemon --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/index.js",
+    "docker-debug": "docker-compose up",
+    "start": "node ./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.50",
+    "nodemon": "^1.19.1",
+    "typescript": "^2.3.2"
+  },
+  "main": "./dist/index.js"
+}
