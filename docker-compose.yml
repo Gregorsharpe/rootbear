@@ -6,5 +6,6 @@ services:
     command: npm run debug
     volumes:
       - ./dist:/rootbear/dist
+      - ./config:/rootbear/config
     ports:
       - "9222:9222"

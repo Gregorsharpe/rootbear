@@ -1,15 +1,6 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+import { Bot } from './bot';
+import { BotConfig } from './typedefs'
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
+let configFile = require('./../config/bot-config.json');
 
-client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Pong!');
-  }
-});
-
-console.log(`Starting bot!`);
-client.login('NTU0NzM0MDI5MjQxNTgxNjA5.XPm4Yg.cJdFmMeJgAwwLRk5obO4bN-5FDk');
+new Bot().start(configFile)
