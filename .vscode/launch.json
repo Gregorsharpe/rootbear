@@ -12,7 +12,7 @@
         "restart": true,
         "timeout": 60000,
         "localRoot": "${workspaceFolder}",
-        "remoteRoot": "/",
+        "remoteRoot": "/rootbear",
         "outFiles": [
           "${workspaceFolder}/dist/**/*.js"
         ],

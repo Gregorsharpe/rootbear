@@ -1,9 +1,8 @@
 FROM node:8-slim
 
-WORKDIR /
+WORKDIR /rootbear
 
-COPY . /
+COPY . /rootbear
 RUN npm install
 
-EXPOSE 3000
 CMD [ "npm", "start" ]

@@ -5,7 +5,6 @@ services:
     build: .
     command: npm run debug
     volumes:
-      - ./dist:/dist
+      - ./dist:/rootbear/dist
     ports:
-      - "3000:3000"
       - "9222:9222"

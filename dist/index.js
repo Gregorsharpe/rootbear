@@ -1,12 +1,13 @@
-"use strict";
-exports.__esModule = true;
-var http = require("http");
-var reqCnt = 1;
-http.createServer(function (req, res) {
-    var message = "Request Count: " + reqCnt;
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end("<html><head><meta http-equiv=\"refresh\" content=\"2\"></head><body>" + message + "</body></html>");
-    console.log("handled request: " + reqCnt++);
-}).listen(3000);
-console.log('server running on port 3000');
+var Discord = require('discord.js');
+var client = new Discord.Client();
+client.on('ready', function () {
+    console.log("Logged in as " + client.user.tag + "!");
+});
+client.on('message', function (msg) {
+    if (msg.content === 'ping') {
+        msg.reply('Pong!');
+    }
+});
+console.log("Starting bot!");
+client.login('NTU0NzM0MDI5MjQxNTgxNjA5.XPm4Yg.cJdFmMeJgAwwLRk5obO4bN-5FDk');
 //# sourceMappingURL=index.js.map

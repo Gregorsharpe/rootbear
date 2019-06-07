@@ -1,15 +1,15 @@
-import * as http from 'http';
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
-let reqCnt = 1;
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
 
-http.createServer((req, res) => {
+client.on('message', msg => {
+  if (msg.content === 'ping') {
+    msg.reply('Pong!');
+  }
+});
 
-  const message = `Request Count: ${reqCnt}`;
-
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(`<html><head><meta http-equiv="refresh" content="2"></head><body>${message}</body></html>`);
-
-  console.log("handled request: " + reqCnt++);
-}).listen(3000);
-
-console.log('server running on port 3000');
+console.log(`Starting bot!`);
+client.login('NTU0NzM0MDI5MjQxNTgxNjA5.XPm4Yg.cJdFmMeJgAwwLRk5obO4bN-5FDk');
