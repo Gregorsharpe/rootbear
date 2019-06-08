@@ -1,19 +1,31 @@
 import * as Discord from 'discord.js'
+import * as Log4js from 'log4js'
 
 import { BotConfig } from './typedefs'
 
 export class Bot {
 
-    private _client: Discord.Client;
-    private _config: BotConfig;
+    private _config: BotConfig | undefined;
+    private _client!: Discord.Client;
+    private _logger!: Log4js.Logger
 
-    public start(config: BotConfig) {
-        this._client = new Discord.Client;
+    constructor(config: BotConfig) {
         this._config = config;
-    
+
+        this._logger = Log4js.getLogger('Bot');
+        this._logger.level = 'debug';
+    }
+
+    public start() {
+
+        // Ensure the provided config is valid.
+        if (!this._config || !this._config.token) { throw new Error('Config invalid, unable to start!'); }
+
+        this._client = new Discord.Client;
+
         // Handles all Bot init and startup.
         this._client.on('ready', () => {
-            console.log(`Logged in as ${this._client.user.tag}!`);
+            this._logger.info(`Logged in as ${this._client.user.tag}.`);
         });
     
         // Callback for message handler.
@@ -21,7 +33,7 @@ export class Bot {
             // Ensure we never reply to ourselves.
             if (message.author.id !== this._client.user.id) {
                 if (message.cleanContent == "ping") {
-                    message.reply("pong!");
+                    message.reply("pong");
                 }
             }
         });

@@ -1,6 +1,6 @@
 import { Bot } from './bot';
 import { BotConfig } from './typedefs'
 
-let configFile = require('./../config/bot-config.json');
+let configFile = require('./../config/bot-config.json') as BotConfig;
 
-new Bot().start(configFile)
+new Bot(configFile).start()
