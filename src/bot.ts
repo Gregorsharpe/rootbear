@@ -2,26 +2,33 @@ import * as Discord from 'discord.js'
 import * as Log4js from 'log4js'
 
 import { BotConfig } from './typedefs'
+import { MessageHandler } from './messageHandler'
+import { ModuleManager } from './moduleManager'
 
 export class Bot {
 
     private _config: BotConfig | undefined;
+    private _prefix!: String;
     private _client!: Discord.Client;
     private _logger!: Log4js.Logger
+    private _handler!: MessageHandler
 
     constructor(config: BotConfig) {
         this._config = config;
 
         this._logger = Log4js.getLogger('Bot');
         this._logger.level = 'debug';
+
+        this._handler = new MessageHandler(this);
     }
 
     public start() {
 
         // Ensure the provided config is valid.
-        if (!this._config || !this._config.token) { throw new Error('Config invalid, unable to start!'); }
+        if (!this._config || !this._config.token || !this._config.prefix) { throw new Error('Config invalid, unable to start!'); }
 
         this._client = new Discord.Client;
+        this._prefix = this._config.prefix
 
         // Handles all Bot init and startup.
         this._client.on('ready', () => {
@@ -30,15 +37,22 @@ export class Bot {
     
         // Callback for message handler.
         this._client.on('message', async (message) => {
-            // Ensure we never reply to ourselves.
-            if (message.author.id !== this._client.user.id) {
-                if (message.cleanContent == "ping") {
-                    message.reply("pong");
-                }
-            }
+            this._handler.handleMessage(message)
         });
     
         this._client.login(this._config.token);
+    }
+
+    public getClient() {
+        return this._client;
+    }
+
+    public getLogger() {
+        return this._logger;
+    }
+
+    public getPrefix() {
+        return this._prefix;
     }
 
 }
