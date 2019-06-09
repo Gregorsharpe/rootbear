@@ -20,6 +20,7 @@ export class ModuleManager {
         await this._commandLookupTable.forEach(async (command, key) => {
             toReturn.push(key)
         });
+
         return toReturn;
     }
 
@@ -33,16 +34,41 @@ export class ModuleManager {
                     resolve(command);
                 } 
             });
+
             if (!success) {
                 this._parentBot.getLogger().error("A non-existing command name was passed from the messageHandler to the moduleManager!");
                 reject();
             }
         });
 
-        
     }
 
-    public async loadModules(){
+    public async getHelp(command: string = "all"): Promise<string> {
+        return new Promise(async (resolve, reject) => {
+            var helpString: string = "```\n";
+            var remainingCounter: number = this._commandLookupTable.size;
+            if (command == "all") {
+                this._commandLookupTable.forEach((command, key) => {
+                    helpString = helpString + key + " - " + command.help().elevatorPitch + '\n';
+                    remainingCounter = remainingCounter - 1;
+                    
+
+                    if (remainingCounter == 0) {
+                        helpString = helpString + "```";
+                        resolve(helpString);
+                    }
+                });
+                
+            }
+            else {
+                this.fetchCommand(command).then( result => {
+                    resolve(result.help().description);
+                });
+            }
+        });
+    }
+
+    public async loadModules() {
         var listOfCommandFilePaths = this.walk(this.getFullPathFromString(this._command_directory));
 
         await listOfCommandFilePaths.forEach(async (file) => {

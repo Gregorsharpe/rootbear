@@ -21,10 +21,21 @@ export class MessageHandler implements MessageHandlerInterface {
         if (this.itWasntMe(message.author) && this.matchesPrefix(message)) {
             let spaceDelimitedMessage:string[] = this.dissectMessaageContent(message);
             let firstWord: string = spaceDelimitedMessage[0].toLowerCase();
+            let secondWord: string = "all";
 
-            if (this.existsInCommands(firstWord)) {
+            if (firstWord == "help") {
+
+                if (spaceDelimitedMessage.length > 1) secondWord = spaceDelimitedMessage[1].toLowerCase();
+
+                this._moduleManager.getHelp(secondWord).then( result => {
+                    message.reply(result);
+                });
+                
+            }
+
+            else if (this.existsInCommands(firstWord)) {
                 this._moduleManager.fetchCommand(firstWord).then( result => {
-                    message.reply(result.process());
+                    message.reply(result.process(message));
                 });
             }
         }

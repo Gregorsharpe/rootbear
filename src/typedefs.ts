@@ -11,5 +11,6 @@ export interface MessageHandlerInterface {
 }
 
 export interface CommandInterface {
-    process(): string;
+    help(): {elevatorPitch:string, description: string}; 
+    process(message: Discord.Message): string;
 }
