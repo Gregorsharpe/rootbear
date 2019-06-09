@@ -49,16 +49,14 @@ export class ModuleManager {
             var remainingCounter: number = this._commandLookupTable.size;
             if (command == "all") {
                 this._commandLookupTable.forEach((command, key) => {
-                    helpString = helpString + key + " - " + command.help().elevatorPitch + '\n';
+                    helpString = helpString + this.padStringToSize(key, 5, " ") + " - " + command.help().elevatorPitch + '\n';
                     remainingCounter = remainingCounter - 1;
-                    
 
                     if (remainingCounter == 0) {
                         helpString = helpString + "```";
                         resolve(helpString);
                     }
                 });
-                
             }
             else {
                 this.fetchCommand(command).then( result => {
@@ -83,6 +81,11 @@ export class ModuleManager {
 
     private getFullPathFromString(toConvert: string): string {
         return path.resolve(process.cwd(), toConvert)
+    }
+
+    private padStringToSize(input: string, desiredLength: number, paddingCharacter: string) {
+        if (input.length >= desiredLength) return input;
+        return input + paddingCharacter.repeat(desiredLength - input.length)
     }
 
     private walk = (dir: string) => {
