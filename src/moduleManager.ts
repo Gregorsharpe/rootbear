@@ -8,17 +8,24 @@ export class ModuleManager {
 
     private _parentBot: Bot;
     private _command_directory: string;
-    private _commandLookupTable: Map<string, CommandInterface> = new Map<string, CommandInterface>();
+    private _commandLookupTable: Map<string, Map<string, CommandInterface>> = new Map<string, Map<string, CommandInterface>>();
+    private _numLoadedCommands: number= 0;
 
     constructor(parentBot: Bot, command_directory: string) {
         this._command_directory = command_directory
         this._parentBot = parentBot;
     }
 
+    public async getTreeOfLoadedCommands() {
+        return this._commandLookupTable;
+    }
+
     public async getListOfLoadedCommands() {
         var toReturn: string[] = [];
-        await this._commandLookupTable.forEach(async (command, key) => {
-            toReturn.push(key)
+        this._commandLookupTable.forEach((commandModule, commandModuleKey) => {
+            commandModule.forEach((command, commandKey) => {
+                toReturn.push(commandKey);
+            });
         });
 
         return toReturn;
@@ -28,11 +35,13 @@ export class ModuleManager {
         var success:Boolean = false;
 
         return new Promise(async (resolve, reject) => {
-            this._commandLookupTable.forEach((command, key) => {
-                if (key == commandName) {
-                    success = true;
-                    resolve(command);
-                } 
+            this._commandLookupTable.forEach((commandModule, commandModuleKey) => {
+                commandModule.forEach((command, commandKey) => {
+                    if (commandKey == commandName) {
+                        success = true;
+                        resolve(command);
+                    } 
+                });
             });
 
             if (!success) {
@@ -50,16 +59,21 @@ export class ModuleManager {
                 let helpPadding: number = 5;
 
                 var helpString: string = "```\n" + this.padStringToSize("help", helpPadding, " " + " - Displays this dialog.\n");
-                var remainingCounter: number = this._commandLookupTable.size;
+                var remainingCounter: number = this._numLoadedCommands;
 
-                this._commandLookupTable.forEach((command, key) => {
-                    helpString = helpString + this.padStringToSize(key, helpPadding, " ") + " - " + command.help().elevatorPitch + '\n';
-                    remainingCounter = remainingCounter - 1;
+                this._parentBot.getLogger().info("Attempting to get help.");
 
-                    if (remainingCounter == 0) {
-                        helpString = helpString + "```";
-                        resolve(helpString);
-                    }
+                this._commandLookupTable.forEach((commandModule, commandModuleKey) => {
+
+                    commandModule.forEach((command, commandKey) => {
+                        helpString = helpString + this.padStringToSize(commandKey, helpPadding, " ") + " - " + command.help().elevatorPitch + '\n';
+                        remainingCounter = remainingCounter - 1;
+
+                        if (remainingCounter == 0) {
+                            helpString = helpString + "```";
+                            resolve(helpString);
+                        }
+                    });
                 });
             }
             else {
@@ -76,16 +90,20 @@ export class ModuleManager {
     }
 
     public async loadModules() {
-        var listOfCommandFilePaths = this.walk(this.getFullPathFromString(this._command_directory));
+        var listOfCommandFilePaths: Array<SourcedCommand> = this.walk(this.getFullPathFromString(this._command_directory));
 
-        await listOfCommandFilePaths.forEach(async (file) => {
+        await listOfCommandFilePaths.forEach(async (sourcedCommand) => {
 
-            const module = await import(file);
-            const command = new module.default() as CommandInterface;
+            const commandModule = await import(sourcedCommand.getCommandPath());
+            const command = new commandModule.default() as CommandInterface;
 
-            this._commandLookupTable.set(command.constructor.name.toLowerCase(), command);
+            if (this._commandLookupTable.get(sourcedCommand.getCommandModuleName()) == undefined) {
+                this._commandLookupTable.set(sourcedCommand.getCommandModuleName(), new Map<string, CommandInterface>());
+            }
+            
+            var moduleIndex: Map<string, CommandInterface> | undefined = this._commandLookupTable.get(sourcedCommand.getCommandModuleName());
+            if (moduleIndex) moduleIndex.set(command.constructor.name.toLowerCase(), command);
         });
-
     }
 
     private getFullPathFromString(toConvert: string): string {
@@ -97,8 +115,8 @@ export class ModuleManager {
         return input + paddingCharacter.repeat(desiredLength - input.length)
     }
 
-    private walk = (dir: string, module?: string) => {
-        var results: string[] = [];
+    private walk = (dir: string, commandModule?: string): Array<SourcedCommand> => {
+        var results: Array<SourcedCommand> = [];
         var list: string[] = fs.readdirSync(dir);
         list.forEach((file) => {
             file = dir + '/' + file;
@@ -110,14 +128,33 @@ export class ModuleManager {
                 let fileName: string[] = file.split('.');
                 if (fileName.pop() === 'js') {
                     /* Is a JS file. */
-                    results.push(file);
+                    if (commandModule != undefined) {
+                        results.push(new SourcedCommand(commandModule, file));
+                        this._numLoadedCommands++;
+                    }
                 }
             }
         });
         return results;
     }
 }
-
     
+class SourcedCommand {
+    private _commandModuleName: string;
+    private _commandPath: string;
 
+    constructor(commandModuleName:string, commandPath: string) {
+        this._commandModuleName = commandModuleName;
+        this._commandPath = commandPath;
+    }
+
+    public getCommandModuleName(): string {
+        return this._commandModuleName;
+    }
+
+    public getCommandPath(): string {
+        return this._commandPath;
+    }
+
+}
     

@@ -44,9 +44,23 @@ export class MessageHandler implements MessageHandlerInterface {
     private async init() {
         await this._moduleManager.loadModules();
 
+        this._parentBot.getLogger().info("---------------------------------");
+        this._parentBot.getLogger().info("Loading commands...");
+
+        this._moduleManager.getTreeOfLoadedCommands().then( commandModuleTree => {
+            commandModuleTree.forEach((commandModule, commandModuleKey) => {
+                var listOfCommandsByModule: string[] = [];
+                commandModule.forEach((command, commandKey) => {
+                    listOfCommandsByModule.push(commandKey);
+                });
+                this._parentBot.getLogger().info("Loaded " + listOfCommandsByModule.length + " from " + commandModuleKey + ": " + listOfCommandsByModule.join(", "));
+            });
+        });
+
         this._moduleManager.getListOfLoadedCommands().then( result => {
             this._commandList = result;
-            this._parentBot.getLogger().info(this._commandList.length + " command(s) loaded: " + this._commandList.toString());
+            this._parentBot.getLogger().info("---------------------------------");
+            this._parentBot.getLogger().info("Loaded " + this._commandList.length + " commands in total!");
         });
     }
 
