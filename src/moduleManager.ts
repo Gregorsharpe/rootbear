@@ -37,7 +37,7 @@ export class ModuleManager {
 
             if (!success) {
                 this._parentBot.getLogger().error("A non-existing command name was passed from the messageHandler to the moduleManager!");
-                reject();
+                reject("Something went wrong. Please try again, or contact support.");
             }
         });
 
@@ -45,11 +45,15 @@ export class ModuleManager {
 
     public async getHelp(command: string = "all"): Promise<string> {
         return new Promise(async (resolve, reject) => {
-            var helpString: string = "```\n";
-            var remainingCounter: number = this._commandLookupTable.size;
             if (command == "all") {
+
+                let helpPadding: number = 5;
+
+                var helpString: string = "```\n" + this.padStringToSize("help", helpPadding, " " + " - Displays this dialog.\n");
+                var remainingCounter: number = this._commandLookupTable.size;
+
                 this._commandLookupTable.forEach((command, key) => {
-                    helpString = helpString + this.padStringToSize(key, 5, " ") + " - " + command.help().elevatorPitch + '\n';
+                    helpString = helpString + this.padStringToSize(key, helpPadding, " ") + " - " + command.help().elevatorPitch + '\n';
                     remainingCounter = remainingCounter - 1;
 
                     if (remainingCounter == 0) {
@@ -59,9 +63,14 @@ export class ModuleManager {
                 });
             }
             else {
-                this.fetchCommand(command).then( result => {
-                    resolve(result.help().description);
-                });
+                if (this._commandLookupTable.has(command)) {
+                    this.fetchCommand(command).then( result => {
+                        resolve(result.help().description);
+                    });
+                }
+                else {
+                    resolve("I couldn't find a command matching: `" + command + "`");
+                }
             }
         });
     }
@@ -88,7 +97,7 @@ export class ModuleManager {
         return input + paddingCharacter.repeat(desiredLength - input.length)
     }
 
-    private walk = (dir: string) => {
+    private walk = (dir: string, module?: string) => {
         var results: string[] = [];
         var list: string[] = fs.readdirSync(dir);
         list.forEach((file) => {
@@ -96,7 +105,7 @@ export class ModuleManager {
             var stat = fs.statSync(file);
             if (stat && stat.isDirectory()) { 
                 /* Recurse into a subdirectory */
-                results = results.concat(this.walk(file));
+                results = results.concat(this.walk(file, file.split('/').pop()));
             } else { 
                 let fileName: string[] = file.split('.');
                 if (fileName.pop() === 'js') {
