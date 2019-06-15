@@ -34,7 +34,7 @@ export class ModuleManager {
     public async fetchCommand(commandName: string): Promise<CommandInterface> {
         var success:Boolean = false;
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise<CommandInterface>(async (resolve, reject) => {
             this._commandLookupTable.forEach((commandModule, commandModuleKey) => {
                 commandModule.forEach((command, commandKey) => {
                     if (commandKey == commandName) {
@@ -53,7 +53,7 @@ export class ModuleManager {
     }
 
     public async getHelp(command: string = "all"): Promise<string> {
-        return new Promise(async (resolve, reject) => {
+        return new Promise<string>(async (resolve, reject) => {
             if (command == "all") {
 
                 let helpPadding: number = 5;
