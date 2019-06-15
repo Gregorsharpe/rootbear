@@ -3,7 +3,6 @@ import * as Log4js from 'log4js'
 
 import { BotConfig } from './typedefs'
 import { MessageHandler } from './messageHandler'
-import { ModuleManager } from './moduleManager'
 
 export class Bot {
 

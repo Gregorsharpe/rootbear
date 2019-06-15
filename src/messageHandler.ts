@@ -1,4 +1,5 @@
 import * as Discord from 'discord.js'
+import * as Log4js from 'log4js'
 
 import { MessageHandlerInterface, CommandInterface } from './typedefs'
 import { Bot } from './bot'
@@ -7,11 +8,13 @@ import { ModuleManager } from './moduleManager'
 export class MessageHandler implements MessageHandlerInterface {
 
     private _parentBot: Bot;
+    private _logger!: Log4js.Logger
     private _moduleManager: ModuleManager;
     private _commandList: string[] = [];
 
     constructor(parentBot: Bot) {
         this._parentBot = parentBot;
+        this._logger = parentBot.getLogger();
         this._moduleManager = new ModuleManager(this._parentBot, './dist/command_modules/');
         this.init()
     }
@@ -44,8 +47,8 @@ export class MessageHandler implements MessageHandlerInterface {
     private async init() {
         await this._moduleManager.loadModules();
 
-        this._parentBot.getLogger().info("---------------------------------");
-        this._parentBot.getLogger().info("Loading commands...");
+        this._logger.info("---------------------------------");
+        this._logger.info("Loading commands...");
 
         this._moduleManager.getTreeOfLoadedCommands().then( commandModuleTree => {
             commandModuleTree.forEach((commandModule, commandModuleKey) => {
@@ -53,23 +56,23 @@ export class MessageHandler implements MessageHandlerInterface {
                 commandModule.forEach((command, commandKey) => {
                     listOfCommandsByModule.push(commandKey);
                 });
-                this._parentBot.getLogger().info("Loaded " + listOfCommandsByModule.length + " from " + commandModuleKey + ": " + listOfCommandsByModule.join(", "));
+                this._logger.info("Loaded " + listOfCommandsByModule.length + " from " + commandModuleKey + ": " + listOfCommandsByModule.join(", "));
             });
         });
 
         this._moduleManager.getListOfLoadedCommands().then( result => {
             this._commandList = result;
-            this._parentBot.getLogger().info("---------------------------------");
-            this._parentBot.getLogger().info("Loaded " + this._commandList.length + " commands in total!");
+            this._logger.info("---------------------------------");
+            this._logger.info("Loaded " + this._commandList.length + " commands in total!");
         });
     }
 
     private itWasntMe(author: Discord.User): Boolean {
-        return (author.id !== this._parentBot.getClient().user.id)
+        return (author.id !== this._parentBot.getClient().user.id);
     }
 
     private matchesPrefix(message: Discord.Message): Boolean {
-        return message.cleanContent.charAt(0) == this._parentBot.getPrefix()
+        return message.cleanContent.charAt(0) == this._parentBot.getPrefix();
     }
     
     private existsInCommands(toCheck: string): Boolean {

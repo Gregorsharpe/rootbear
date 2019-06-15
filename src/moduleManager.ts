@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import * as Log4js from 'log4js'
 
 import { Bot } from './bot'
 import { CommandInterface } from './typedefs'
@@ -7,6 +8,7 @@ import { CommandInterface } from './typedefs'
 export class ModuleManager {
 
     private _parentBot: Bot;
+    private _logger!: Log4js.Logger
     private _command_directory: string;
     private _commandLookupTable: Map<string, Map<string, CommandInterface>> = new Map<string, Map<string, CommandInterface>>();
     private _numLoadedCommands: number= 0;
@@ -14,6 +16,7 @@ export class ModuleManager {
     constructor(parentBot: Bot, command_directory: string) {
         this._command_directory = command_directory
         this._parentBot = parentBot;
+        this._logger = parentBot.getLogger();
     }
 
     public async getTreeOfLoadedCommands() {
@@ -45,7 +48,7 @@ export class ModuleManager {
             });
 
             if (!success) {
-                this._parentBot.getLogger().error("A non-existing command name was passed from the messageHandler to the moduleManager!");
+                this._logger.error("A non-existing command name was passed from the messageHandler to the moduleManager!");
                 reject("Something went wrong. Please try again, or contact support.");
             }
         });
