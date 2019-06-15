@@ -1,7 +1,7 @@
 import * as Discord from 'discord.js'
 import * as Log4js from 'log4js'
 
-import { MessageHandlerInterface, CommandInterface } from './typedefs'
+import { MessageHandlerInterface } from './typedefs'
 import { Bot } from './bot'
 import { ModuleManager } from './moduleManager'
 
@@ -19,6 +19,10 @@ export class MessageHandler implements MessageHandlerInterface {
         this.init()
     }
 
+
+    // Contains a built-in definition for the 'help' command, otherwise passing the desired 
+    // command name to the module manager and getting back a CommandInterface.
+
     public async handleMessage(message: Discord.Message) {
         // Ensure we never reply to ourselves.
         if (this.itWasntMe(message.author) && this.matchesPrefix(message)) {
@@ -33,7 +37,7 @@ export class MessageHandler implements MessageHandlerInterface {
                 this._moduleManager.getHelp(secondWord).then( result => {
                     message.reply(result);
                 });
-                
+
             }
 
             else if (this.existsInCommands(firstWord)) {
@@ -44,6 +48,7 @@ export class MessageHandler implements MessageHandlerInterface {
         }
     }
 
+    // Init the module manager so we can start making requests to it. Also provides pretty results to console.
     private async init() {
         await this._moduleManager.loadModules();
 
@@ -67,6 +72,7 @@ export class MessageHandler implements MessageHandlerInterface {
         });
     }
 
+    // Ensure the ID of a Discord user does not match the bot's ID. 
     private itWasntMe(author: Discord.User): Boolean {
         return (author.id !== this._parentBot.getClient().user.id);
     }
@@ -79,6 +85,7 @@ export class MessageHandler implements MessageHandlerInterface {
         return this._commandList.indexOf(toCheck) > -1
     }
 
+    // Turns a single-string Message into a list of words that was tokenized on spaces.
     private dissectMessaageContent(message: Discord.Message): string[] {
         let messageContent: string = message.cleanContent;
 
