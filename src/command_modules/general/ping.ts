@@ -1,5 +1,6 @@
 import * as Discord from 'discord.js'
 
+import { Bot } from '../../bot'
 import { CommandInterface } from '../../typedefs'
 
 export default class Ping implements CommandInterface {
@@ -11,7 +12,7 @@ export default class Ping implements CommandInterface {
         }
     }
 
-    public process(message: Discord.Message): string {
+    public process(bot: Bot, message: Discord.Message): string {
         return "Pong!"
     }
 }

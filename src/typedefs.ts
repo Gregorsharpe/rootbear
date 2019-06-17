@@ -1,5 +1,7 @@
 import * as Discord from 'discord.js'
 
+import { Bot } from './bot'
+
 export interface BotConfig {
     token: string
     prefix: string
@@ -12,5 +14,5 @@ export interface MessageHandlerInterface {
 
 export interface CommandInterface {
     help(): {elevatorPitch:string, description: string}; 
-    process(message: Discord.Message): string;
+    process(bot: Bot, message: Discord.Message): string;
 }

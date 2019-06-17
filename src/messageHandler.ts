@@ -1,8 +1,8 @@
 import * as Discord from 'discord.js'
 import * as Log4js from 'log4js'
 
-import { MessageHandlerInterface } from './typedefs'
 import { Bot } from './bot'
+import { MessageHandlerInterface } from './typedefs'
 import { ModuleManager } from './moduleManager'
 
 export class MessageHandler implements MessageHandlerInterface {
@@ -42,7 +42,7 @@ export class MessageHandler implements MessageHandlerInterface {
 
             else if (this.existsInCommands(firstWord)) {
                 this._moduleManager.fetchCommand(firstWord).then( result => {
-                    message.reply(result.process(message));
+                    message.reply(result.process(this._parentBot, message));
                 });
             }
         }
@@ -86,7 +86,7 @@ export class MessageHandler implements MessageHandlerInterface {
     }
 
     // Turns a single-string Message into a list of words that was tokenized on spaces.
-    private dissectMessaageContent(message: Discord.Message): string[] {
+    public dissectMessaageContent(message: Discord.Message): string[] {
         let messageContent: string = message.cleanContent;
 
         // Strip the prefix and split on spaces.

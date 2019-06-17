@@ -9,6 +9,8 @@ Rootbear is primarily written in Typescript, and packaged inside a Docker contai
 ## What is left to do?
 
 ### _General TODO_
+
+- Should help commands have the ability to detect improper arguments and reply with a guide on how to use the command? If so, that should probably be a separate field on the command interface. The prefix could be appended at print time.
   
 - Figure out how to persist volatile storage. Storing JSON to disk, REDIS docker container?
 
