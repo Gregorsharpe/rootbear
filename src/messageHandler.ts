@@ -42,7 +42,7 @@ export class MessageHandler implements MessageHandlerInterface {
 
             else if (this.existsInCommands(firstWord)) {
                 this._moduleManager.fetchCommand(firstWord).then( result => {
-                    message.reply(result.process(this._parentBot, message));
+                    result.process(this._parentBot, message);
                 });
             }
         }

@@ -12,26 +12,22 @@ export default class Roll implements CommandInterface {
         }
     }
 
-    public process(bot: Bot, message: Discord.Message): string {
+    public process(bot: Bot, message: Discord.Message) {
         let dice: string[] = this.dissectMessaageContent(bot, message);
         let results: string = "";
         dice.shift();
 
         if (dice.length > 0) {
-            console.log("B1")
             for (const choice of dice) {
                 let maxInt: number = parseInt(choice);
                 results = results + "[**" + this.rollDie(maxInt).toString() + "**] ";
             }
-            console.log("Finished B1")
         }
         else {
             results = "**[" + this.rollDie(100).toString() + "]**";
         }
 
-        console.log(results)
-
-        return results;
+        message.reply(results);
     }
 
     private rollDie(maxInt: number): number {

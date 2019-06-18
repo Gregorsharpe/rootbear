@@ -12,19 +12,19 @@ export default class Choose implements CommandInterface {
         }
     }
 
-    public process(bot: Bot, message: Discord.Message): string {
+    public process(bot: Bot, message: Discord.Message) {
         let choices: string[] = this.dissectMessaageContent(bot, message);
         choices.shift();
 
         if (choices.length > 1) {
             let myChoice: string = choices[Math.floor(Math.random() * choices.length)];
-            return myChoice;
+            message.reply(myChoice);
         }
         else if (choices.length === 1) {
-            return "Tough choice, but I picked \"" + choices[0] + "\".";
+            message.reply("Tough choice, but I picked \"" + choices[0] + "\".");
         }
         else {
-            return "I choose you!"
+            message.reply("I choose you!");
         }
     }
 

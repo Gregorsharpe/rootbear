@@ -22,12 +22,19 @@ Rootbear is primarily written in Typescript, and packaged inside a Docker contai
 
 - Build proper docker containers and deploy them on a server.
 
+### _Commands currently implemented_:
+
+* 'General'
+
+	  * **Ping** - Checks if rootbear is alive, should return with a "Pong!"
+	  * **Choose** - Randomly select one answer from 1 - x given options. (If 0-1 are given, sassy responses are mandatory.)
+	  * **Roll** - Roll an X sided die, defaults to 100. User can provide max input for one or more dice. "roll 20 40 6" might return [10] [36] [1]
+
+
 ### _Commands remaining to be implemented_:
 
 *  'General'  - (Things featured on most bots.)
 
-	  * **Choose** - Randomly select one answer from 1 - x given options. (If 0-1 are given, sassy responses are mandatory.)
-	  * **Roll** - Roll an X sided die, defaults to 100. Are there other use-cases that should be expanded here like multiple rolls?
 	  * **Flip** - Flip a coin, or a user. Interactions required for flipping the bot, owners / admins, etc.
 	  * **RPS** - Not used often, but could be a candidate for interacting with other bots.
 	  * **Hug** - Potentially a combination of hug, love, and similar commands. Lots of happy and reassuring responses required. Positive affirmations?

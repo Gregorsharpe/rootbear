@@ -12,7 +12,7 @@ export default class Ping implements CommandInterface {
         }
     }
 
-    public process(bot: Bot, message: Discord.Message): string {
-        return "Pong!"
+    public process(bot: Bot, message: Discord.Message) {
+        message.reply("Pong!");
     }
 }
