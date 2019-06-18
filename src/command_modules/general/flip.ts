@@ -2,7 +2,6 @@ import * as Discord from 'discord.js'
 
 import { Bot } from '../../bot'
 import { CommandInterface } from '../../typedefs'
-import { readSync } from 'fs';
 
 export default class Flip implements CommandInterface {
 
