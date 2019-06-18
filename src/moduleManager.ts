@@ -64,7 +64,7 @@ export class ModuleManager {
                 var helpString: string = "```\n" + this.padStringToSize("help", helpPadding, " " + " - Displays this dialog. help <command> for more detailed info. \n");
                 var remainingCounter: number = this._numLoadedCommands;
 
-                this._parentBot.getLogger().info("Attempting to get help.");
+                this._logger.info("Attempting to get help.");
 
                 this._commandLookupTable.forEach((commandModule, commandModuleKey) => {
 
