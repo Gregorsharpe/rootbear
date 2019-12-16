@@ -8,6 +8,7 @@ export class Bot {
 
     private _config: BotConfig | undefined;
     private _prefix!: String;
+    private _version!: String;
     private _client!: Discord.Client;
     private _logger!: Log4js.Logger
     private _handler!: MessageHandler
@@ -24,10 +25,11 @@ export class Bot {
     public start() {
 
         // Ensure the provided config is valid.
-        if (!this._config || !this._config.token || !this._config.prefix) { throw new Error('Config invalid, unable to start!'); }
+        if (!this._config || !this._config.token || !this._config.prefix || !this._config.version) { throw new Error('Config invalid, unable to start!'); }
 
         this._client = new Discord.Client;
-        this._prefix = this._config.prefix
+        this._prefix = this._config.prefix;
+        this._version = this._config.version;
 
         // Handles all Bot init and startup.
         this._client.on('ready', () => {
@@ -52,6 +54,14 @@ export class Bot {
 
     public getPrefix() {
         return this._prefix;
+    }
+
+    public getUsername() {
+        return this.getClient().user.username;
+    }
+
+    public getVersion() {
+        return this._version;
     }
 
 }

@@ -53,6 +53,8 @@ export class MessageHandler implements MessageHandlerInterface {
         await this._moduleManager.loadModules();
 
         this._logger.info("---------------------------------");
+        this._logger.info("Running version: " + this._parentBot.getVersion().toString());
+        this._logger.info("---------------------------------");
         this._logger.info("Loading commands...");
 
         this._moduleManager.getTreeOfLoadedCommands().then( commandModuleTree => {

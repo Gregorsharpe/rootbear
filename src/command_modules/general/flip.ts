@@ -22,7 +22,14 @@ export default class Flip implements CommandInterface {
             if (message.mentions.users.size > 0) {
                 for (const user of message.mentions.users) {
                     let mentionedUser: Discord.User = user[1];
-                    results = results + "(╯°□°）╯︵ " + flipString(mentionedUser.username.toLowerCase()) + '\n';
+                    bot.getLogger().info(bot.getUsername() + " : " + mentionedUser.username);
+                    if (bot.getUsername() == mentionedUser.username) {
+                        results = results + "You think you're funny?!\n";
+                        results = results + "(╯°□°）╯︵ " + flipString(message.author.username) + '\n';
+                    }
+                    else {
+                        results = results + "(╯°□°）╯︵ " + flipString(mentionedUser.username.toLowerCase()) + '\n';
+                    }    
                 }
                 message.channel.send(results);
             }
@@ -53,6 +60,7 @@ export default class Flip implements CommandInterface {
         return messageContent.split(' ');
     }
 }
+
 
 function flipString(aString: string) {
 
