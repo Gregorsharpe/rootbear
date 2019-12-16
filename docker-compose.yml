@@ -1,9 +1,9 @@
 version: "2"
 
 services:
-  web:
+  bot:
     build: .
-    command: npm run debug
+    command: bash -c "npm run postinstall && npm start"
     volumes:
       - ./dist:/rootbear/dist
       - ./config:/rootbear/config
