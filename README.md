@@ -29,13 +29,13 @@ Rootbear is primarily written in Typescript, and packaged inside a Docker contai
 	  * **Ping** - Checks if rootbear is alive, should return with a "Pong!"
 	  * **Choose** - Randomly select one answer from 1 - x given options. (If 0-1 are given, sassy responses are mandatory.)
 	  * **Roll** - Roll an X sided die, defaults to 100. User can provide max input for one or more dice. "roll 20 40 6" might return [10] [36] [1]
-
+	  * **Version** - Returns the bot's internal version number, mostly used for debugging.
+	  * **Flip** - Flip a coin, or a user. Special interaction for flipping the bot, more possibly required for owners / admins, etc.
 
 ### _Commands remaining to be implemented_:
 
 *  'General'  - (Things featured on most bots.)
 
-	  * **Flip** - Flip a coin, or a user. Interactions required for flipping the bot, owners / admins, etc.
 	  * **RPS** - Not used often, but could be a candidate for interacting with other bots.
 	  * **Hug** - Potentially a combination of hug, love, and similar commands. Lots of happy and reassuring responses required. Positive affirmations?
 	  * **Userinfo** - Fetch any interesting information from the discord.js User datatype.
