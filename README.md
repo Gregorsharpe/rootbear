@@ -4,7 +4,8 @@ A modular Discord companion that is being constructed with the goals of providin
 
 ## How can I run this bot?
 
-Rootbear is primarily written in Typescript, and packaged inside a Docker container. The exact process for spinning up a rootbear-docker container will be detailed here once the project has exited the alpha stages.
+Rootbear is primarily written in Typescript, and packaged inside a Docker container. To run the bot, first clone the repo and make a copy of config/bot-config.json.example. 
+Name the copy config/bot-config.json, and insert your discord bot account's token where appropriate. "docker-compose up" will then build and spin up a container running the bot.
 
 ## What is left to do?
 
