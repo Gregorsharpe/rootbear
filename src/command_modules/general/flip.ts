@@ -39,12 +39,12 @@ export default class Flip implements CommandInterface {
                 for ( let i = 0; i < numCoins; i++ ) {
                     results = results + this.flipCoin() + " ";
                 }
-                message.channel.sendMessage(results);
+                message.channel.send(results);
             }
         }
         // Default, flip one coin.
         else {
-            message.channel.sendMessage(this.flipCoin());
+            message.channel.send(this.flipCoin());
         }
     }
 
