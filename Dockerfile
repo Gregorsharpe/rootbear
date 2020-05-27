@@ -6,4 +6,5 @@ COPY . /rootbear
 
 RUN npm install
 
+CMD [ "npm", "compile" ]
 CMD [ "npm", "start" ]
