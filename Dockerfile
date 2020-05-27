@@ -5,7 +5,6 @@ WORKDIR /rootbear
 COPY . /rootbear
 
 RUN npm install
+RUN npm run compile
 
-CMD [ "ls" ]
-CMD [ "npm", "compile" ]
 CMD [ "npm", "start" ]
