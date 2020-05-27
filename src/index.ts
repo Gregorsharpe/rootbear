@@ -1,5 +1,5 @@
 import { Bot } from './bot';
-import { BotConfig } from './typedefs'
+import { BotConfig } from './typedefs';
 
 /*
     The first file executed when the project starts, serves
