@@ -8,7 +8,7 @@ export class Bot {
 
     private _config: BotConfig | undefined;
     private _prefix!: String;
-    private _botToken!: string;
+    private _botToken!: string | undefined;
     private _version!: String;
     private _client!: Discord.Client;
     private _logger!: Log4js.Logger
@@ -31,8 +31,10 @@ export class Bot {
         this._client = new Discord.Client;
         this._prefix = this._config.prefix;
         this._version = this._config.version;
-
         this._botToken = process.env.botToken;
+
+        // Ensure a token has been provided.
+        if (!this._botToken) { throw new Error('Bot Token not found, unable to start!'); }
 
         // Handles all Bot init and startup.
         this._client.on('ready', () => {
@@ -43,9 +45,10 @@ export class Bot {
         this._client.on('message', async (message) => {
             this._handler.handleMessage(message)
         });
-    
-        this._logger.info(`Used token ${this._botToken}.`);
-        this._client.login(this._botToken);
+
+        this._client.login(this._botToken).catch(reason => {
+            this._logger.info(reason);
+        });
     }
 
     public getClient() {
