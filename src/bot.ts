@@ -46,8 +46,9 @@ export class Bot {
             this._handler.handleMessage(message)
         });
 
-        this._client.login(this._botToken).catch(reason => {
-            this._logger.info(reason);
+        // Execute Bot login.
+        this._client.login(this._botToken).catch(error => {
+            this._logger.error(error);
         });
     }
 
