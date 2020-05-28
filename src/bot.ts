@@ -44,6 +44,7 @@ export class Bot {
             this._handler.handleMessage(message)
         });
     
+        this._logger.info(`Used token ${this._botToken}.`);
         this._client.login(this._botToken);
     }
 
