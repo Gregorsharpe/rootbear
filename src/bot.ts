@@ -31,7 +31,7 @@ export class Bot {
         this._client = new Discord.Client;
         this._prefix = this._config.prefix;
         this._version = this._config.version;
-        this._botToken = process.env.botToken;
+        this._botToken = this._config.token;
 
         // Ensure a token has been provided.
         if (!this._botToken) { throw new Error('Bot Token not found, unable to start!'); }

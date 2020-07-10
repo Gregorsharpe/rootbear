@@ -3,6 +3,7 @@ import * as Discord from 'discord.js'
 import { Bot } from './bot'
 
 export interface BotConfig {
+    token: string
     prefix: string
     version: string
     optionalConfigThing?: string

@@ -6,7 +6,7 @@ A modular Discord companion that is being constructed with the goals of providin
 
 Rootbear is primarily written in Typescript, and packaged inside a Docker container. You can either clone the repo and build the docker image directly, or grab the latest version from DockerHub at gsharpe/rootbear:latest
 
-When running the bot an environment variable "botToken"  must be set to your Discord Bot token. 
+The compose file will create a volume containing the "config" directory, the bot-config.json file within needs to be updated to contain the Discord Bot Token associated with your bot before running.
 
 ## What is left to do?
 
@@ -28,28 +28,28 @@ When running the bot an environment variable "botToken"  must be set to your Dis
 
 * 'General'
 
-	  * **Ping** - Checks if rootbear is alive, should return with a "Pong!"
-	  * **Choose** - Randomly select one answer from 1 - x given options. (If 0-1 are given, sassy responses are mandatory.)
-	  * **Roll** - Roll an X sided die, defaults to 100. User can provide max input for one or more dice. "roll 20 40 6" might return [10] [36] [1]
-	  * **Version** - Returns the bot's internal version number, mostly used for debugging.
-	  * **Flip** - Flip a coin, or a user. Special interaction for flipping the bot, more possibly required for owners / admins, etc.
+	  * Ping - Checks if rootbear is alive, should return with a "Pong!"
+	  * Choose - Randomly select one answer from 1 - x given options. (If 0-1 are given, sassy responses are mandatory.)
+	  * Roll - Roll an X sided die, defaults to 100. User can provide max input for one or more dice. "roll 20 40 6" might return [10] [36] [1]
+	  * Version - Returns the bot's internal version number, mostly used for debugging.
+	  * Flip - Flip a coin, or a user. Special interaction for flipping the bot, more possibly required for owners / admins, etc.
 
 ### _Commands remaining to be implemented_:
 
 *  'General'  - (Things featured on most bots.)
 
-	  * **RPS** - Not used often, but could be a candidate for interacting with other bots.
-	  * **Hug** - Potentially a combination of hug, love, and similar commands. Lots of happy and reassuring responses required. Positive affirmations?
-	  * **Userinfo** - Fetch any interesting information from the discord.js User datatype.
-	  * **Serverinfo** - Same as the above, but for server.
+	  * RPS - Not used often, but could be a candidate for interacting with other bots.
+	  * Hug - Potentially a combination of hug, love, and similar commands. Lots of happy and reassuring responses required. Positive affirmations?
+	  * Userinfo - Fetch any interesting information from the discord.js User datatype.
+	  * Serverinfo - Same as the above, but for server.
 
 * 'Generic' -  Previously an 'addon' module for rootbear.
 
-	* **Insult** - Pulls random words from lists defined in local config and joins them together to create insults. The lists themselves are totally custom and the creativity / severity of the insults vary entirely depending on who populates the lists.
-	* **What's new / Changelogs** - Pull the last X (default 10) updates to the bot and display them. Previously a text file of changes was maintained, but it'd be much more interesting to pull directly from github!
-	* **Wipeslate / Clear** - Removes your last X messages.
-	*  **Topic** - Allows users to set channel topics even if they don't have admin permissions. This is useful for providing programmatic control over what sorts of topics can be set, and a blacklist can be implemented to stifle those who abuse their newfound power.
-	* **Watch / Alert** - Previously allowed a user to set a watchdog on another player's rich-presence status, and recieve a DM when it changed. Was originally supposed to make lining up schedules for games easier, but it probably needs to be workshopped for both usage and use cases.
+	* Insult - Pulls random words from lists defined in local config and joins them together to create insults. The lists themselves are totally custom and the creativity / severity of the insults vary entirely depending on who populates the lists.
+	* What's new / Changelogs - Pull the last X (default 10) updates to the bot and display them. Previously a text file of changes was maintained, but it'd be much more interesting to pull directly from github!
+	* Wipeslate / Clear - Removes your last X messages.
+	*  Topic - Allows users to set channel topics even if they don't have admin permissions. This is useful for providing programmatic control over what sorts of topics can be set, and a blacklist can be implemented to stifle those who abuse their newfound power.
+	* Watch / Alert - Previously allowed a user to set a watchdog on another player's rich-presence status, and recieve a DM when it changed. Was originally supposed to make lining up schedules for games easier, but it probably needs to be workshopped for both usage and use cases.
   
 * 'League of Legends' - Module containing all commands to do with the MOBA by Riot Games.
 
@@ -62,13 +62,13 @@ When running the bot an environment variable "botToken"  must be set to your Dis
 
 * 'Owner' - Commands relating exclusively to the management of the bot itself.
 
-	* **WhatIsMyIP** - Less related to server management, but sits at an owner level as a backup for dynamic IP and DNS issues.
-	* **Prefix** - Change the bot's prefix from discord rather than modifying it directly.
-	* **Nickname** - Change the bot's nickname.
-	* **Status** - Change the bot's status / currently played game.
-	* **Contact** - Send a message to the owner.
-	* **BotInfo**- Git repo,botversion,      other dev info.
-	* **Uptime** - Uptime.
+	* WhatIsMyIP - Less related to server management, but sits at an owner level as a backup for dynamic IP and DNS issues.
+	* Prefix - Change the bot's prefix from discord rather than modifying it directly.
+	* Nickname - Change the bot's nickname.
+	* Status - Change the bot's status / currently played game.
+	* Contact - Send a message to the owner.
+	* BotInfo- Git repo,botversion,      other dev info.
+	* Uptime - Uptime.
 
 	* Server management? Joining, listing and leaving servers via commands?
 	* Currently I don't see any benefit to modifying the list of loaded commands through add/remove/update, but it could become useful in the future so this will serve as a stub reminder.
