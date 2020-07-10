@@ -6,3 +6,5 @@ services:
     command: bash -c "npm run compile && npm start"
     ports:
       - "9222:9222"
+    environment:
+      - botToken
