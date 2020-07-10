@@ -30,17 +30,7 @@ export class MessageHandler implements MessageHandlerInterface {
             let firstWord: string = spaceDelimitedMessage[0].toLowerCase();
             let secondWord: string = "all";
 
-            if (firstWord == "help") {
-
-                if (spaceDelimitedMessage.length > 1) secondWord = spaceDelimitedMessage[1].toLowerCase();
-
-                this._moduleManager.getHelp(secondWord).then( result => {
-                    message.reply(result);
-                });
-
-            }
-
-            else if (this.existsInCommands(firstWord)) {
+            if (this.existsInCommands(firstWord)) {
                 this._moduleManager.fetchCommand(firstWord).then( result => {
                     result.process(this._parentBot, message);
                 });
@@ -57,7 +47,7 @@ export class MessageHandler implements MessageHandlerInterface {
         this._logger.info("---------------------------------");
         this._logger.info("Loading commands...");
 
-        this._moduleManager.getTreeOfLoadedCommands().then( commandModuleTree => {
+        this._moduleManager.getCommandLookupTable().then( commandModuleTree => {
             commandModuleTree.forEach((commandModule, commandModuleKey) => {
                 var listOfCommandsByModule: string[] = [];
                 commandModule.forEach((command, commandKey) => {
@@ -85,6 +75,10 @@ export class MessageHandler implements MessageHandlerInterface {
     
     private existsInCommands(toCheck: string): Boolean {
         return this._commandList.indexOf(toCheck) > -1
+    }
+
+    public getModuleManager() {
+        return this._moduleManager;
     }
 
     // Turns a single-string Message into a list of words that was tokenized on spaces.

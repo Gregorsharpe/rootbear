@@ -11,7 +11,8 @@ export class ModuleManager {
     private _logger!: Log4js.Logger
     private _command_directory: string;
     private _commandLookupTable: Map<string, Map<string, CommandInterface>> = new Map<string, Map<string, CommandInterface>>();
-    private _numLoadedCommands: number= 0;
+    private _numLoadedCommands: number = 0;
+    private _longestCommandNameLength: number = 0;
 
     constructor(parentBot: Bot, command_directory: string) {
         this._command_directory = command_directory
@@ -19,7 +20,7 @@ export class ModuleManager {
         this._logger = parentBot.getLogger();
     }
 
-    public async getTreeOfLoadedCommands() {
+    public async getCommandLookupTable() {
         return this._commandLookupTable;
     }
 
@@ -55,43 +56,6 @@ export class ModuleManager {
 
     }
 
-    public async getHelp(command: string = "all"): Promise<string> {
-        return new Promise<string>(async (resolve, reject) => {
-            if (command == "all") {
-
-                let helpPadding: number = 5;
-
-                var helpString: string = "```\n" + this.padStringToSize("help", helpPadding, " " + " - Displays this dialog. help <command> for more detailed info. \n");
-                var remainingCounter: number = this._numLoadedCommands;
-
-                this._logger.info("Attempting to get help.");
-
-                this._commandLookupTable.forEach((commandModule, commandModuleKey) => {
-
-                    commandModule.forEach((command, commandKey) => {
-                        helpString = helpString + this.padStringToSize(commandKey, helpPadding, " ") + " - " + command.help().elevatorPitch + '\n';
-                        remainingCounter = remainingCounter - 1;
-
-                        if (remainingCounter == 0) {
-                            helpString = helpString + "```";
-                            resolve(helpString);
-                        }
-                    });
-                });
-            }
-            else {
-                if (this._commandLookupTable.has(command)) {
-                    this.fetchCommand(command).then( result => {
-                        resolve(result.help().description);
-                    });
-                }
-                else {
-                    resolve("I couldn't find a command matching: `" + command + "`");
-                }
-            }
-        });
-    }
-
     public async loadModules() {
         var listOfCommandFilePaths: Array<SourcedCommand> = this.walk(this.getFullPathFromString(this._command_directory));
 
@@ -100,22 +64,21 @@ export class ModuleManager {
             const commandModule = await import(sourcedCommand.getCommandPath());
             const command = new commandModule.default() as CommandInterface;
 
+            /* Ensure the command's module has been instantiated to avoid calling set on an undefined var. */
             if (this._commandLookupTable.get(sourcedCommand.getCommandModuleName()) == undefined) {
                 this._commandLookupTable.set(sourcedCommand.getCommandModuleName(), new Map<string, CommandInterface>());
             }
+
+            let lowercasedCommand: string = command.constructor.name.toLowerCase();
+            if (lowercasedCommand.length > this._longestCommandNameLength) this._longestCommandNameLength = lowercasedCommand.length;
             
-            var moduleIndex: Map<string, CommandInterface> | undefined = this._commandLookupTable.get(sourcedCommand.getCommandModuleName());
-            if (moduleIndex) moduleIndex.set(command.constructor.name.toLowerCase(), command);
+            /* Populate the currently empty commandLookupTable entry with the name and command reference. */
+            this._commandLookupTable.get(sourcedCommand.getCommandModuleName()).set(lowercasedCommand, command);
         });
     }
 
     private getFullPathFromString(toConvert: string): string {
         return path.resolve(process.cwd(), toConvert)
-    }
-
-    private padStringToSize(input: string, desiredLength: number, paddingCharacter: string) {
-        if (input.length >= desiredLength) return input;
-        return input + paddingCharacter.repeat(desiredLength - input.length)
     }
 
     private walk = (dir: string, commandModule?: string): Array<SourcedCommand> => {
@@ -139,6 +102,10 @@ export class ModuleManager {
             }
         });
         return results;
+    }
+
+    public getLongestCommandNameLength() {
+        return this._longestCommandNameLength;
     }
 }
     

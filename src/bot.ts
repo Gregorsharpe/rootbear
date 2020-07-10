@@ -56,6 +56,10 @@ export class Bot {
         return this._client;
     }
 
+    public getHandler() {
+        return this._handler;
+    }
+
     public getLogger() {
         return this._logger;
     }
