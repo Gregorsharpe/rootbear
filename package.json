@@ -23,7 +23,7 @@
   },
   "main": "./dist/index.js",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
+    "@discordjs/opus": "^0.8.0",
     "@types/ws": "^7.2.6",
     "bufferutil": "^4.0.1",
     "discord.js": "^12.2.0",
