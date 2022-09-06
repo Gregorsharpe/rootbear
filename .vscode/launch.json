@@ -4,21 +4,13 @@
       {
         "type": "node",
         "request": "launch",
-        "name": "Launch in Docker",
-        "preLaunchTask": "tsc-watch",
+        "name": "Debug Locally",
+        "preLaunchTask": "debug+live_reload",
         "runtimeExecutable": "npm",
-        "runtimeArgs": [ "run", "docker-debug" ],
+        "runtimeArgs": [ "run", "debug" ],
         "port": 9222,
         "restart": true,
         "timeout": 60000,
-        "localRoot": "${workspaceFolder}",
-        "remoteRoot": "/rootbear",
-        "outFiles": [
-          "${workspaceFolder}/dist/**/*.js"
-        ],
-        "skipFiles": [
-          "<node_internals>/**/*.js",
-        ],
         "console": "integratedTerminal",
         "internalConsoleOptions": "neverOpen"
       }

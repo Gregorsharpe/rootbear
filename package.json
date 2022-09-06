@@ -7,8 +7,9 @@
     "url": "git://github.com/Gregorsharpe/rootbear.git"
   },
   "scripts": {
-    "compile": "tsc -p ./src",
-    "debug": "nodemon --legacy-watch --watch ./ --inspect=0.0.0.0:9222",
+    "compile": "tsc -p",
+    "compileWatch": "tsc -w",
+    "debug": "nodemon",
     "start": "node ./dist/index.js"
   },
   "engines": {
