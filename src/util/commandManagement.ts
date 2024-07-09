@@ -35,10 +35,10 @@ export function loadCommands(logger: Logger): Collection<any, any> {
         );
       }
     }
-    logger.info(
-      `Loaded ${commands.size} commands: ${commands.map((c) => c.data.name).join(', ')}`,
-    );
   }
+  logger.info(
+    `Loaded ${commands.size} commands: ${commands.map((c) => c.data.name).join(', ')}`,
+  );
   return commands;
 }
 
