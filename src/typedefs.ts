@@ -1,19 +1,15 @@
-import * as Discord from 'discord.js'
+import type { SlashCommandBuilder } from 'discord.js';
 
-import { Bot } from './bot'
+import type { Bot } from './bot';
 
 export interface BotConfig {
-    token: string
-    prefix: string
-    version: string
-    optionalConfigThing?: string
+  CLIENT_ID: string | undefined;
+  TOKEN: string | undefined;
+  VERSION: string | undefined;
+  TEST_SERVER_ID: string | undefined;
 }
 
-export interface MessageHandlerInterface {
-    handleMessage(message: Discord.Message): void;
-}
-
-export interface CommandInterface {
-    help(): {elevatorPitch:string, description: string}; 
-    process(bot: Bot, message: Discord.Message): void;
+export interface CommandDefinition {
+  data: SlashCommandBuilder;
+  execute(bot: Bot, interaction: any): void;
 }
