@@ -63,4 +63,8 @@ export class Bot {
   public getCommands() {
     return this.commands;
   }
+
+  public getConfig() {
+    return this.config;
+  }
 }
