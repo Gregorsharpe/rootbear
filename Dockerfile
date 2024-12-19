@@ -4,7 +4,6 @@ WORKDIR /rootbear
 
 COPY . /rootbear
 
-RUN npm install
-RUN npm run compile
+RUN npm ci
 
 CMD [ "npm", "start" ]
