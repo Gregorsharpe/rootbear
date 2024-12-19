@@ -15,6 +15,15 @@ if ('TOKEN' in env) config.TOKEN = env.TOKEN;
 if ('VERSION' in env) config.VERSION = env.VERSION;
 if ('TEST_SERVER_ID' in env) config.TEST_SERVER_ID = env.TEST_SERVER_ID;
 
+if ('SEVEN_DAYS_TELNET_SERVER_ADDRESS' in env)
+  config.SEVEN_DAYS_TELNET_SERVER_ADDRESS =
+    env.SEVEN_DAYS_TELNET_SERVER_ADDRESS;
+if ('SEVEN_DAYS_TELNET_PORT' in env)
+  config.SEVEN_DAYS_TELNET_PORT = env.SEVEN_DAYS_TELNET_PORT;
+if ('SEVEN_DAYS_TELNET_PASSWORD' in env)
+  config.SEVEN_DAYS_TELNET_PASSWORD = env.SEVEN_DAYS_TELNET_PASSWORD;
+if ('SEVEN_DAYS_ADMINS' in env)
+  config.SEVEN_DAYS_ADMINS = env.SEVEN_DAYS_ADMINS;
 if (process.argv[2] === '--publishCommands') {
   const logger = getLogger('PUBLISH');
   logger.level = 'ALL';

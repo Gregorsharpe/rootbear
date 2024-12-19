@@ -15,6 +15,12 @@ export function getEnvFile(): BotConfig {
       TOKEN: envFile.TOKEN,
       VERSION: envFile.VERSION,
       TEST_SERVER_ID: envFile.TEST_SERVER_ID,
+
+      SEVEN_DAYS_TELNET_SERVER_ADDRESS:
+        envFile.SEVEN_DAYS_TELNET_SERVER_ADDRESS,
+      SEVEN_DAYS_TELNET_PORT: envFile.SEVEN_DAYS_TELNET_PORT,
+      SEVEN_DAYS_TELNET_PASSWORD: envFile.SEVEN_DAYS_TELNET_PASSWORD,
+      SEVEN_DAYS_ADMINS: envFile.SEVEN_DAYS_ADMINS,
     };
   } catch (err: any) {
     if (!err.message.includes('no such file or directory')) {
@@ -26,6 +32,11 @@ export function getEnvFile(): BotConfig {
       TOKEN: undefined,
       VERSION: undefined,
       TEST_SERVER_ID: undefined,
+
+      SEVEN_DAYS_TELNET_SERVER_ADDRESS: undefined,
+      SEVEN_DAYS_TELNET_PORT: undefined,
+      SEVEN_DAYS_TELNET_PASSWORD: undefined,
+      SEVEN_DAYS_ADMINS: undefined,
     };
   }
 }

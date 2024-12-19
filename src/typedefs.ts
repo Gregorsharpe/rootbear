@@ -7,6 +7,11 @@ export interface BotConfig {
   TOKEN: string | undefined;
   VERSION: string | undefined;
   TEST_SERVER_ID: string | undefined;
+
+  SEVEN_DAYS_TELNET_SERVER_ADDRESS: string | undefined;
+  SEVEN_DAYS_TELNET_PORT: string | undefined;
+  SEVEN_DAYS_TELNET_PASSWORD: string | undefined;
+  SEVEN_DAYS_ADMINS: string | undefined;
 }
 
 export interface CommandDefinition {
