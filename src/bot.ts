@@ -50,6 +50,14 @@ export class Bot {
     this.client.on(Events.InteractionCreate, async (interaction: Interaction) =>
       interactionHandler(this, interaction, this.commands),
     );
+
+    this.client.on(Events.Warn, async (warning: string) =>
+      this.logger.warn(warning),
+    );
+
+    this.client.on(Events.Error, async (error: Error) =>
+      this.logger.error(error),
+    );
   }
 
   public getVersion() {
