@@ -17,6 +17,7 @@
     "typescript": "^5.5.3",
     "utf-8-validate": "^6.0.4",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "zlib-sync": "^0.1.9"
   },
   "devDependencies": {
@@ -33,7 +34,6 @@
     "eslint-plugin-unused-imports": "^3.2.0",
     "nodemon": "^3.1.4",
     "prettier": "3.3.2",
-    "prettier-eslint": "^16.3.0",
-    "tsconfig-paths": "^4.2.0"
+    "prettier-eslint": "^16.3.0"
   }
 }
