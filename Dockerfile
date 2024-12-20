@@ -1,9 +1,12 @@
-FROM node:14
+FROM node:22.2.0
 
-WORKDIR /rootbear
+# Create app directory
+WORKDIR /usr/src/app
 
-COPY . /rootbear
+# Install app dependencies
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-RUN npm ci
+COPY . .
 
 CMD [ "npm", "start" ]
