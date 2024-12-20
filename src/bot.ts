@@ -43,6 +43,7 @@ export class Bot {
       }
     });
 
+    this.logger.info(`Attempting login with token: ${this.config.TOKEN}`);
     this.client.login(this.config.TOKEN).catch((error) => {
       this.logger.error(error);
     });
